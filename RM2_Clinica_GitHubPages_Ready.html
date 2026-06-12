@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RM2 – Clínica Virtual</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --lima: #84C400;
+      --lima-dark: #5E9100;
+      --lima-light: #C6E87A;
+      --lima-pale: #F0FAD6;
+      --white: #FFFFFF;
+      --gray-light: #F5F5F5;
+      --gray: #6B7280;
+      --dark: #1A2E05;
+      --shadow: 0 4px 24px rgba(132,196,0,0.13);
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family:'Inter', sans-serif; color:#222; background:#fff; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top:0; left:0; right:0; z-index:999;
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 2px 16px rgba(132,196,0,0.12);
+      display: flex; align-items:center; justify-content:space-between;
+      padding: 0 5%; height: 68px;
+    }
+    .logo {
+      font-family:'Poppins',sans-serif;
+      font-size:1.7rem; font-weight:800;
+      color: var(--lima-dark);
+      letter-spacing:-1px;
+    }
+    .logo span { color: var(--lima); }
+    .nav-links { display:flex; gap:8px; list-style:none; }
+    .nav-links a {
+      text-decoration:none; color:#333; font-weight:500;
+      padding: 8px 18px; border-radius:25px;
+      transition: all 0.25s;
+      font-size:0.93rem;
+    }
+    .nav-links a:hover, .nav-links a.active {
+      background: var(--lima); color:#fff;
+    }
+    .nav-cta {
+      background: var(--lima-dark); color:#fff !important;
+      border-radius:25px;
+    }
+
+    /* ── SECTIONS ── */
+    section { scroll-margin-top: 68px; }
+
+    /* ── HERO ── */
+    #inicio {
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--dark) 0%, #2E5A09 50%, #3D7A0C 100%);
+      display:flex; align-items:center; justify-content:center;
+      text-align:center; padding: 100px 5% 60px;
+      position:relative; overflow:hidden;
+    }
+    #inicio::before {
+      content:'';
+      position:absolute; inset:0;
+      background: radial-gradient(circle at 70% 40%, rgba(132,196,0,0.25) 0%, transparent 60%);
+    }
+    .hero-content { position:relative; z-index:1; max-width:800px; }
+    .hero-badge {
+      display:inline-block;
+      background: rgba(132,196,0,0.2);
+      border: 1px solid var(--lima);
+      color: var(--lima-light);
+      padding:6px 20px; border-radius:20px;
+      font-size:0.82rem; letter-spacing:2px; text-transform:uppercase;
+      margin-bottom:24px;
+    }
+    .hero-title {
+      font-family:'Poppins',sans-serif;
+      font-size: clamp(3rem,8vw,5.5rem);
+      font-weight:800; color:#fff;
+      line-height:1.05; margin-bottom:12px;
+    }
+    .hero-title span { color: var(--lima); }
+    .hero-sub {
+      font-size:1.15rem; color: rgba(255,255,255,0.75);
+      max-width:560px; margin:0 auto 36px; line-height:1.7;
+    }
+    .hero-btns { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
+    .btn-primary {
+      background: var(--lima); color: var(--dark);
+      padding:14px 32px; border-radius:30px;
+      font-weight:700; font-size:0.95rem; text-decoration:none;
+      transition:all 0.25s; display:inline-block;
+      box-shadow: 0 4px 20px rgba(132,196,0,0.4);
+    }
+    .btn-primary:hover { background: var(--lima-light); transform:translateY(-2px); }
+    .btn-outline {
+      border:2px solid rgba(255,255,255,0.4); color:#fff;
+      padding:14px 32px; border-radius:30px;
+      font-weight:600; font-size:0.95rem; text-decoration:none;
+      transition:all 0.25s; display:inline-block;
+    }
+    .btn-outline:hover { border-color: var(--lima); color: var(--lima); }
+
+    /* stats bar */
+    .stats-bar {
+      background:#fff; padding:32px 5%;
+      display:flex; justify-content:center; gap:60px; flex-wrap:wrap;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    }
+    .stat { text-align:center; }
+    .stat-num {
+      font-family:'Poppins',sans-serif;
+      font-size:2rem; font-weight:800; color: var(--lima-dark);
+    }
+    .stat-label { font-size:0.82rem; color: var(--gray); margin-top:2px; }
+
+    /* ── QUIENES SOMOS ── */
+    #quienes-somos {
+      padding: 80px 5%;
+      background: var(--lima-pale);
+    }
+    .section-label {
+      font-size:0.78rem; letter-spacing:3px; text-transform:uppercase;
+      color: var(--lima-dark); font-weight:600; margin-bottom:10px;
+    }
+    .section-title {
+      font-family:'Poppins',sans-serif;
+      font-size: clamp(1.8rem,4vw,2.8rem);
+      font-weight:800; color: var(--dark); margin-bottom:20px; line-height:1.2;
+    }
+    .section-title span { color: var(--lima); }
+    .two-col { display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; max-width:1100px; margin:0 auto; }
+    .two-col p { color:#444; line-height:1.8; margin-bottom:16px; font-size:1.02rem; }
+    .values-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:24px; }
+    .value-card {
+      background:#fff; padding:20px; border-radius:14px;
+      border-left:4px solid var(--lima);
+      box-shadow: var(--shadow);
+    }
+    .value-card h4 { font-weight:700; color: var(--lima-dark); margin-bottom:6px; font-size:0.95rem; }
+    .value-card p { font-size:0.85rem; color: var(--gray); margin:0; }
+    .about-img {
+      background: linear-gradient(135deg, var(--lima-dark), var(--lima));
+      border-radius:24px; padding:50px 30px; text-align:center;
+      color:#fff; font-family:'Poppins',sans-serif;
+    }
+    .about-img .big { font-size:4rem; font-weight:800; display:block; }
+    .about-img .small { font-size:1rem; opacity:0.85; }
+    .team-list { margin-top:20px; list-style:none; text-align:left; }
+    .team-list li {
+      padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.2);
+      display:flex; align-items:center; gap:10px; font-size:0.9rem;
+    }
+    .team-list li::before { content:'✦'; font-size:0.6rem; }
+
+    /* ── ESPECIALIDADES ── */
+    #especialidades { padding:80px 5%; background:#fff; }
+    .center { text-align:center; max-width:700px; margin:0 auto 50px; }
+    .esp-grid { display:grid; grid-template-columns:1fr 1fr; gap:32px; max-width:1100px; margin:0 auto; }
+    .esp-card {
+      background:#fff; border-radius:20px;
+      box-shadow: 0 6px 30px rgba(0,0,0,0.08);
+      overflow:hidden; transition:transform 0.3s, box-shadow 0.3s;
+      border:2px solid transparent;
+    }
+    .esp-card:hover { transform:translateY(-6px); box-shadow:0 12px 40px rgba(132,196,0,0.2); border-color: var(--lima); }
+    .esp-header {
+      background: linear-gradient(135deg, var(--lima-dark), var(--lima));
+      padding:36px 30px; color:#fff;
+    }
+    .esp-icon { font-size:2.5rem; margin-bottom:10px; }
+    .esp-header h3 { font-family:'Poppins',sans-serif; font-size:1.4rem; font-weight:800; }
+    .esp-header p { font-size:0.85rem; opacity:0.85; margin-top:4px; }
+    .esp-body { padding:28px 30px; }
+    .esp-features { list-style:none; margin-bottom:20px; }
+    .esp-features li {
+      padding:8px 0; border-bottom:1px solid #f0f0f0;
+      font-size:0.9rem; color:#444; display:flex; align-items:center; gap:10px;
+    }
+    .esp-features li::before { content:''; width:8px; height:8px; background: var(--lima); border-radius:50%; flex-shrink:0; }
+    .esp-features li:last-child { border:none; }
+
+    /* tabs inside card */
+    .esp-tabs { display:flex; gap:6px; margin-bottom:16px; flex-wrap:wrap; }
+    .esp-tab {
+      padding:6px 14px; border-radius:20px; font-size:0.8rem; font-weight:600;
+      border:2px solid var(--lima-light); color: var(--lima-dark);
+      cursor:pointer; transition:all 0.2s; background:#fff;
+    }
+    .esp-tab.active, .esp-tab:hover {
+      background: var(--lima); color:#fff; border-color: var(--lima);
+    }
+    .tab-content { display:none; }
+    .tab-content.active { display:block; }
+    .video-placeholder {
+      background: linear-gradient(135deg, #f0f0f0, var(--lima-pale));
+      border-radius:12px; padding:30px; text-align:center;
+      border:2px dashed var(--lima-light); margin-bottom:12px;
+    }
+    .video-placeholder .play-btn {
+      width:56px; height:56px; background: var(--lima);
+      border-radius:50%; display:flex; align-items:center; justify-content:center;
+      margin:0 auto 10px; font-size:1.4rem; color:#fff;
+    }
+    .video-placeholder p { font-size:0.83rem; color: var(--gray); }
+    .video-placeholder a {
+      color: var(--lima-dark); font-weight:600; text-decoration:none; font-size:0.85rem;
+    }
+    .cap-item {
+      background: var(--lima-pale); border-radius:10px; padding:14px 16px;
+      display:flex; align-items:center; gap:12px; margin-bottom:8px;
+    }
+    .cap-icon { font-size:1.4rem; }
+    .cap-item h5 { font-size:0.88rem; font-weight:700; color: var(--dark); }
+    .cap-item p { font-size:0.78rem; color: var(--gray); margin-top:2px; }
+    .cap-item a { font-size:0.78rem; color: var(--lima-dark); font-weight:600; text-decoration:none; }
+    .form-embed {
+      background: var(--lima-pale); border-radius:12px; padding:20px; text-align:center;
+    }
+    .form-embed p { font-size:0.88rem; color:#444; margin-bottom:14px; }
+    .btn-form {
+      background: var(--lima-dark); color:#fff; padding:10px 24px;
+      border-radius:20px; text-decoration:none; font-weight:600; font-size:0.88rem;
+      display:inline-block; transition:background 0.2s;
+    }
+    .btn-form:hover { background: var(--lima); }
+    .meet-box {
+      background: linear-gradient(135deg, var(--dark), #2E5A09);
+      border-radius:12px; padding:20px; text-align:center; color:#fff;
+    }
+    .meet-box p { font-size:0.88rem; opacity:0.85; margin-bottom:14px; }
+    .btn-meet {
+      background: var(--lima); color: var(--dark); padding:10px 24px;
+      border-radius:20px; text-decoration:none; font-weight:700; font-size:0.88rem;
+      display:inline-block; transition:all 0.2s; margin:4px;
+    }
+    .btn-meet:hover { background: var(--lima-light); }
+
+    /* ── CONTACTO ── */
+    #contacto { padding:80px 5%; background: var(--lima-pale); }
+    .contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:50px; max-width:1000px; margin:0 auto; align-items:start; }
+    .contact-info p { color:#444; line-height:1.8; margin-bottom:24px; }
+    .contact-item {
+      display:flex; gap:14px; align-items:flex-start; margin-bottom:20px;
+    }
+    .contact-icon {
+      width:44px; height:44px; background: var(--lima);
+      border-radius:12px; display:flex; align-items:center; justify-content:center;
+      font-size:1.2rem; flex-shrink:0;
+    }
+    .contact-item h5 { font-weight:700; font-size:0.9rem; color: var(--dark); }
+    .contact-item p { font-size:0.85rem; color: var(--gray); margin:0; line-height:1.5; }
+    .contact-form-box {
+      background:#fff; border-radius:20px; padding:36px;
+      box-shadow: var(--shadow);
+    }
+    .contact-form-box h3 {
+      font-family:'Poppins',sans-serif; font-size:1.4rem; font-weight:700;
+      color: var(--dark); margin-bottom:20px;
+    }
+    .form-group { margin-bottom:16px; }
+    .form-group label { display:block; font-size:0.85rem; font-weight:600; color:#444; margin-bottom:6px; }
+    .form-group input, .form-group select, .form-group textarea {
+      width:100%; padding:12px 16px; border:2px solid #e5e5e5; border-radius:10px;
+      font-family:'Inter',sans-serif; font-size:0.9rem; transition:border 0.2s;
+      outline:none;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      border-color: var(--lima);
+    }
+    .form-group textarea { height:100px; resize:vertical; }
+    .btn-submit {
+      width:100%; background: var(--lima-dark); color:#fff;
+      padding:14px; border-radius:12px; border:none; cursor:pointer;
+      font-family:'Poppins',sans-serif; font-weight:700; font-size:1rem;
+      transition:background 0.2s;
+    }
+    .btn-submit:hover { background: var(--lima); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark); color:rgba(255,255,255,0.7);
+      padding:40px 5% 20px; text-align:center;
+    }
+    footer .footer-logo {
+      font-family:'Poppins',sans-serif; font-size:2rem; font-weight:800;
+      color:#fff; margin-bottom:8px;
+    }
+    footer .footer-logo span { color: var(--lima); }
+    footer p { font-size:0.85rem; margin-bottom:8px; }
+    footer .footer-links { display:flex; gap:20px; justify-content:center; margin:16px 0; flex-wrap:wrap; }
+    footer .footer-links a { color: var(--lima-light); text-decoration:none; font-size:0.85rem; }
+    footer hr { border:none; border-top:1px solid rgba(255,255,255,0.1); margin:20px 0; }
+
+    /* ── MODAL EDIT ── */
+    .edit-btn-fab {
+      position:fixed; bottom:30px; right:30px; z-index:1000;
+      background: var(--lima-dark); color:#fff;
+      width:56px; height:56px; border-radius:50%; border:none;
+      font-size:1.5rem; cursor:pointer; box-shadow:0 4px 20px rgba(0,0,0,0.2);
+      transition:all 0.2s; display:flex; align-items:center; justify-content:center;
+    }
+    .edit-btn-fab:hover { background: var(--lima); transform:scale(1.1); }
+    .modal-overlay {
+      display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5);
+      z-index:2000; align-items:center; justify-content:center;
+    }
+    .modal-overlay.open { display:flex; }
+    .modal {
+      background:#fff; border-radius:20px; width:90%; max-width:600px;
+      max-height:85vh; overflow-y:auto; padding:36px;
+      box-shadow:0 20px 60px rgba(0,0,0,0.25);
+    }
+    .modal h2 {
+      font-family:'Poppins',sans-serif; font-size:1.5rem; font-weight:800;
+      color: var(--dark); margin-bottom:6px;
+    }
+    .modal p { color: var(--gray); font-size:0.88rem; margin-bottom:24px; }
+    .edit-section { margin-bottom:20px; }
+    .edit-section label { display:block; font-size:0.85rem; font-weight:600; color:#333; margin-bottom:6px; }
+    .edit-section input, .edit-section textarea, .edit-section select {
+      width:100%; padding:10px 14px; border:2px solid #e5e5e5; border-radius:8px;
+      font-family:'Inter',sans-serif; font-size:0.9rem; outline:none;
+    }
+    .edit-section input:focus, .edit-section textarea:focus { border-color: var(--lima); }
+    .edit-section textarea { height:80px; resize:vertical; }
+    .modal-actions { display:flex; gap:12px; justify-content:flex-end; margin-top:20px; }
+    .btn-cancel {
+      padding:10px 24px; border:2px solid #e5e5e5; border-radius:10px;
+      background:#fff; cursor:pointer; font-weight:600; color:#555; font-family:'Inter',sans-serif;
+    }
+    .btn-save {
+      padding:10px 28px; background: var(--lima-dark); color:#fff; border:none;
+      border-radius:10px; cursor:pointer; font-weight:700; font-family:'Inter',sans-serif;
+    }
+    .btn-save:hover { background: var(--lima); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width:768px) {
+      .two-col, .esp-grid, .contact-grid { grid-template-columns:1fr; gap:24px; }
+      .values-grid { grid-template-columns:1fr; }
+      .stats-bar { gap:30px; }
+      .nav-links { display:none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">RM<span>2</span></div>
+  <ul class="nav-links">
+    <li><a href="#inicio" class="active">Inicio</a></li>
+    <li><a href="#quienes-somos">Quiénes Somos</a></li>
+    <li><a href="#especialidades">Especialidades</a></li>
+    <li><a href="#contacto" class="nav-cta">Contacto</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="inicio">
+  <div class="hero-content">
+    <span class="hero-badge">🏥 Clínica Virtual RM2</span>
+    <h1 class="hero-title">Tu Salud,<br/><span>Sin Fronteras</span></h1>
+    <p class="hero-sub">Atención médica especializada en línea. Consulta con nuestros especialistas en cirugía desde cualquier lugar, con la misma calidad y confianza de una consulta presencial.</p>
+    <div class="hero-btns">
+      <a href="#especialidades" class="btn-primary">Ver Especialidades</a>
+      <a href="#contacto" class="btn-outline">Agendar Consulta</a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat"><div class="stat-num">2</div><div class="stat-label">Especialidades Quirúrgicas</div></div>
+  <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Atención Virtual</div></div>
+  <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">Disponibilidad Online</div></div>
+  <div class="stat"><div class="stat-num">RM2</div><div class="stat-label">Clínica de Excelencia</div></div>
+</div>
+
+<!-- QUIÉNES SOMOS -->
+<section id="quienes-somos">
+  <div class="two-col">
+    <div>
+      <p class="section-label">Nuestra Institución</p>
+      <h2 class="section-title">¿Quiénes <span>Somos</span>?</h2>
+      <p id="about-text">Somos RM2, una clínica virtual de especialidades médicas quirúrgicas comprometida con brindar atención de calidad a través de plataformas digitales. Nuestro equipo está conformado por estudiantes de medicina de quinto semestre con formación en las ramas más avanzadas de la cirugía.</p>
+      <p>Nuestra misión es democratizar el acceso a la información médica especializada, ofreciendo un espacio educativo y de consulta donde pacientes y profesionales puedan encontrar recursos confiables, videos de capacitación y orientación personalizada.</p>
+      <div class="values-grid">
+        <div class="value-card"><h4>🎯 Misión</h4><p>Atención médica virtual accesible y de calidad para todos.</p></div>
+        <div class="value-card"><h4>🔭 Visión</h4><p>Ser referente en salud digital en América Latina.</p></div>
+        <div class="value-card"><h4>❤️ Valores</h4><p>Ética, excelencia, empatía y compromiso.</p></div>
+        <div class="value-card"><h4>🌱 Compromiso</h4><p>Educación continua y actualización permanente.</p></div>
+      </div>
+    </div>
+    <div class="about-img">
+      <span class="big">RM2</span>
+      <span class="small">Clínica Virtual de Especialidades</span>
+      <ul class="team-list">
+        <li>Cirugía General</li>
+        <li>Cirugía Plástica</li>
+        <li>Equipo Docente Especializado</li>
+        <li>Plataforma 100% Digital</li>
+        <li>Recursos Educativos Actualizados</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ESPECIALIDADES -->
+<section id="especialidades">
+  <div class="center">
+    <p class="section-label">Nuestras Áreas</p>
+    <h2 class="section-title">Nuestras <span>Especialidades</span></h2>
+    <p style="color:var(--gray);line-height:1.7;">Cada especialidad cuenta con presentación, características, videos educativos, capacitaciones, formularios y links para reuniones virtuales.</p>
+  </div>
+
+  <div class="esp-grid">
+
+    <!-- CIRUGÍA GENERAL -->
+    <div class="esp-card">
+      <div class="esp-header">
+        <div class="esp-icon">🔬</div>
+        <h3>Cirugía General</h3>
+        <p>Procedimientos abdominales, digestivos y de urgencias</p>
+      </div>
+      <div class="esp-body">
+        <div class="esp-tabs">
+          <button class="esp-tab active" onclick="showTab('cg','presentacion')">Presentación</button>
+          <button class="esp-tab" onclick="showTab('cg','videos')">Videos</button>
+          <button class="esp-tab" onclick="showTab('cg','capacitacion')">Capacitaciones</button>
+          <button class="esp-tab" onclick="showTab('cg','formulario')">Formulario</button>
+          <button class="esp-tab" onclick="showTab('cg','reunion')">Reunión Virtual</button>
+        </div>
+
+        <!-- PRESENTACIÓN -->
+        <div id="cg-presentacion" class="tab-content active">
+          <ul class="esp-features">
+            <li>Apendicectomía y cirugía de emergencia abdominal</li>
+            <li>Colecistectomía laparoscópica</li>
+            <li>Herniorrafias e inguinocrurales</li>
+            <li>Cirugía de colon, recto y ano</li>
+            <li>Endoscopia diagnóstica y terapéutica</li>
+            <li>Trauma abdominal y politraumatismo</li>
+          </ul>
+        </div>
+
+        <!-- VIDEOS -->
+        <div id="cg-videos" class="tab-content">
+          <div class="video-placeholder">
+            <div class="play-btn">▶</div>
+            <p><strong>Apendicectomía Laparoscópica</strong><br/>Técnica quirúrgica paso a paso</p>
+            <a href="https://www.youtube.com/results?search_query=apendicectomia+laparoscopica" target="_blank">▶ Ver en YouTube</a>
+          </div>
+          <div class="video-placeholder">
+            <div class="play-btn">▶</div>
+            <p><strong>Colecistectomía Laparoscópica</strong><br/>Procedimiento completo HD</p>
+            <a href="https://www.youtube.com/results?search_query=colecistectomia+laparoscopica" target="_blank">▶ Ver en YouTube</a>
+          </div>
+        </div>
+
+        <!-- CAPACITACIONES -->
+        <div id="cg-capacitacion" class="tab-content">
+          <div class="cap-item">
+            <div class="cap-icon">📋</div>
+            <div>
+              <h5>Diagnóstico en Urgencias Quirúrgicas</h5>
+              <p>Módulo de e-learning · 3 horas</p>
+              <a href="https://www.coursera.org/search?query=general+surgery" target="_blank">Acceder al Módulo →</a>
+            </div>
+          </div>
+          <div class="cap-item">
+            <div class="cap-icon">🎓</div>
+            <div>
+              <h5>Suturas y Técnicas Básicas</h5>
+              <p>Taller virtual · Con certificado</p>
+              <a href="https://www.youtube.com/results?search_query=tecnicas+suturas+cirugia" target="_blank">Ver Taller →</a>
+            </div>
+          </div>
+          <div class="cap-item">
+            <div class="cap-icon">📊</div>
+            <div>
+              <h5>Manejo Perioperatorio del Paciente</h5>
+              <p>Seminario en línea · Próxima fecha por confirmar</p>
+              <a href="#contacto">Inscribirse →</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- FORMULARIO -->
+        <div id="cg-formulario" class="tab-content">
+          <div class="form-embed">
+            <p>Completa el formulario de consulta en Cirugía General. Nos comunicaremos contigo para coordinar tu atención virtual.</p>
+            <a href="https://docs.google.com/forms/u/0/" target="_blank" class="btn-form">📝 Abrir Formulario de Consulta</a>
+            <br/><br/>
+            <a href="https://docs.google.com/forms/u/0/" target="_blank" class="btn-form" style="background:#555;">📋 Formulario de Seguimiento</a>
+          </div>
+        </div>
+
+        <!-- REUNIÓN VIRTUAL -->
+        <div id="cg-reunion" class="tab-content">
+          <div class="meet-box">
+            <p>Agenda tu consulta virtual con nuestro equipo de Cirugía General. Elige la plataforma de tu preferencia:</p>
+            <a href="https://meet.google.com" target="_blank" class="btn-meet">🎥 Google Meet</a>
+            <a href="https://zoom.us/start/videomeeting" target="_blank" class="btn-meet">💻 Zoom</a>
+            <a href="https://teams.microsoft.com" target="_blank" class="btn-meet">🟣 Microsoft Teams</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CIRUGÍA PLÁSTICA -->
+    <div class="esp-card">
+      <div class="esp-header" style="background:linear-gradient(135deg, #2E5A09, #84C400);">
+        <div class="esp-icon">✨</div>
+        <h3>Cirugía Plástica</h3>
+        <p>Reconstrucción, estética y manejo de quemados</p>
+      </div>
+      <div class="esp-body">
+        <div class="esp-tabs">
+          <button class="esp-tab active" onclick="showTab('cp','presentacion')">Presentación</button>
+          <button class="esp-tab" onclick="showTab('cp','videos')">Videos</button>
+          <button class="esp-tab" onclick="showTab('cp','capacitacion')">Capacitaciones</button>
+          <button class="esp-tab" onclick="showTab('cp','formulario')">Formulario</button>
+          <button class="esp-tab" onclick="showTab('cp','reunion')">Reunión Virtual</button>
+        </div>
+
+        <!-- PRESENTACIÓN -->
+        <div id="cp-presentacion" class="tab-content active">
+          <ul class="esp-features">
+            <li>Cirugía reconstructiva post-trauma y oncológica</li>
+            <li>Manejo integral de quemaduras y cicatrices</li>
+            <li>Rinoplastia, blefaroplastia y lifting facial</li>
+            <li>Liposucción y abdominoplastia</li>
+            <li>Reconstrucción mamaria y oncoplástica</li>
+            <li>Microcirugía y colgajos libres</li>
+          </ul>
+        </div>
+
+        <!-- VIDEOS -->
+        <div id="cp-videos" class="tab-content">
+          <div class="video-placeholder">
+            <div class="play-btn">▶</div>
+            <p><strong>Principios de Cirugía Reconstructiva</strong><br/>Técnicas fundamentales y nuevas tendencias</p>
+            <a href="https://www.youtube.com/results?search_query=cirugia+plastica+reconstructiva" target="_blank">▶ Ver en YouTube</a>
+          </div>
+          <div class="video-placeholder">
+            <div class="play-btn">▶</div>
+            <p><strong>Manejo de Quemaduras Graves</strong><br/>Protocolo de atención integral</p>
+            <a href="https://www.youtube.com/results?search_query=manejo+quemaduras+cirugia" target="_blank">▶ Ver en YouTube</a>
+          </div>
+        </div>
+
+        <!-- CAPACITACIONES -->
+        <div id="cp-capacitacion" class="tab-content">
+          <div class="cap-item">
+            <div class="cap-icon">🎨</div>
+            <div>
+              <h5>Técnicas de Injerto y Colgajos</h5>
+              <p>Módulo avanzado · 4 horas</p>
+              <a href="https://www.coursera.org/search?query=plastic+surgery" target="_blank">Acceder al Módulo →</a>
+            </div>
+          </div>
+          <div class="cap-item">
+            <div class="cap-icon">🔬</div>
+            <div>
+              <h5>Cicatrización y Manejo de Heridas</h5>
+              <p>Curso online · Autogestionado</p>
+              <a href="https://www.youtube.com/results?search_query=cicatrizacion+heridas+cirugia" target="_blank">Ver Curso →</a>
+            </div>
+          </div>
+          <div class="cap-item">
+            <div class="cap-icon">🌟</div>
+            <div>
+              <h5>Introducción a la Microcirugía</h5>
+              <p>Webinar interactivo · Cupos limitados</p>
+              <a href="#contacto">Inscribirse →</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- FORMULARIO -->
+        <div id="cp-formulario" class="tab-content">
+          <div class="form-embed">
+            <p>Completa el formulario de valoración en Cirugía Plástica. Incluye tu consulta y fotos si aplica para una mejor orientación.</p>
+            <a href="https://docs.google.com/forms/u/0/" target="_blank" class="btn-form">📝 Abrir Formulario de Valoración</a>
+            <br/><br/>
+            <a href="https://docs.google.com/forms/u/0/" target="_blank" class="btn-form" style="background:#555;">📋 Formulario Post-Consulta</a>
+          </div>
+        </div>
+
+        <!-- REUNIÓN VIRTUAL -->
+        <div id="cp-reunion" class="tab-content">
+          <div class="meet-box">
+            <p>Agenda tu consulta virtual con nuestro equipo de Cirugía Plástica. Elige la plataforma de tu preferencia:</p>
+            <a href="https://meet.google.com" target="_blank" class="btn-meet">🎥 Google Meet</a>
+            <a href="https://zoom.us/start/videomeeting" target="_blank" class="btn-meet">💻 Zoom</a>
+            <a href="https://teams.microsoft.com" target="_blank" class="btn-meet">🟣 Microsoft Teams</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <div style="text-align:center;margin-bottom:50px;">
+    <p class="section-label">Comunícate con Nosotros</p>
+    <h2 class="section-title">Contacto <span>&</span> Citas</h2>
+  </div>
+  <div class="contact-grid">
+    <div class="contact-info">
+      <p>Estamos disponibles para resolver tus dudas y agendar tu consulta virtual. Completa el formulario o contáctanos directamente por nuestros canales oficiales.</p>
+      <div class="contact-item">
+        <div class="contact-icon">📧</div>
+        <div><h5>Correo Electrónico</h5><p id="contact-email">rm2clinica@virtual.edu.bo</p></div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📱</div>
+        <div><h5>WhatsApp</h5><p id="contact-phone">+591 70000000</p></div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">🕐</div>
+        <div><h5>Horario de Atención</h5><p>Lunes a Viernes: 8:00 – 20:00<br/>Sábados: 9:00 – 14:00</p></div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">🌐</div>
+        <div><h5>Plataforma Virtual</h5><p>Consultas 100% online</p></div>
+      </div>
+    </div>
+    <div class="contact-form-box">
+      <h3>Agendar Consulta</h3>
+      <div class="form-group">
+        <label>Nombre completo</label>
+        <input type="text" placeholder="Tu nombre y apellido"/>
+      </div>
+      <div class="form-group">
+        <label>Correo electrónico</label>
+        <input type="email" placeholder="tu@correo.com"/>
+      </div>
+      <div class="form-group">
+        <label>Especialidad de interés</label>
+        <select>
+          <option>Cirugía General</option>
+          <option>Cirugía Plástica</option>
+          <option>Consulta General</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Motivo de consulta</label>
+        <textarea placeholder="Describe brevemente tu consulta o síntomas..."></textarea>
+      </div>
+      <button class="btn-submit" onclick="alert('✅ Tu consulta fue enviada. Te contactaremos pronto.')">Enviar Solicitud</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">RM<span>2</span></div>
+  <p>Clínica Virtual de Especialidades Quirúrgicas</p>
+  <p>Estudiantes de Medicina · Quinto Semestre</p>
+  <div class="footer-links">
+    <a href="#inicio">Inicio</a>
+    <a href="#quienes-somos">Quiénes Somos</a>
+    <a href="#especialidades">Especialidades</a>
+    <a href="#contacto">Contacto</a>
+  </div>
+  <hr/>
+  <p style="font-size:0.78rem;opacity:0.5;">© 2025 RM2 Clínica Virtual · Todos los derechos reservados</p>
+</footer>
+
+<!-- FAB DE EDICIÓN -->
+<button class="edit-btn-fab" onclick="openModal()" title="Editar página">✏️</button>
+
+<!-- MODAL EDITOR -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <h2>✏️ Editar Página RM2</h2>
+    <p>Personaliza el contenido de tu clínica virtual</p>
+
+    <div class="edit-section">
+      <label>🏥 Nombre del Consultorio</label>
+      <input type="text" id="edit-name" value="RM2 – Clínica Virtual de Especialidades Quirúrgicas"/>
+    </div>
+    <div class="edit-section">
+      <label>📝 Texto "Quiénes Somos"</label>
+      <textarea id="edit-about">Somos RM2, una clínica virtual de especialidades médicas quirúrgicas comprometida con brindar atención de calidad a través de plataformas digitales. Nuestro equipo está conformado por estudiantes de medicina de quinto semestre con formación en las ramas más avanzadas de la cirugía.</textarea>
+    </div>
+    <div class="edit-section">
+      <label>📧 Correo de Contacto</label>
+      <input type="text" id="edit-email" value="rm2clinica@virtual.edu.bo"/>
+    </div>
+    <div class="edit-section">
+      <label>📱 Teléfono / WhatsApp</label>
+      <input type="text" id="edit-phone" value="+591 70000000"/>
+    </div>
+    <div class="edit-section">
+      <label>🔗 Link Google Form – Cirugía General (pegar URL aquí)</label>
+      <input type="text" id="edit-form-cg" placeholder="https://docs.google.com/forms/d/e/..."/>
+    </div>
+    <div class="edit-section">
+      <label>🔗 Link Google Form – Cirugía Plástica (pegar URL aquí)</label>
+      <input type="text" id="edit-form-cp" placeholder="https://docs.google.com/forms/d/e/..."/>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+      <button class="btn-save" onclick="saveEdits()">💾 Guardar Cambios</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // TAB SYSTEM
+  function showTab(prefix, tab) {
+    document.querySelectorAll('[id^="' + prefix + '-"]').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.esp-tab').forEach(btn => {
+      // Only deactivate tabs in the same card
+    });
+    const target = document.getElementById(prefix + '-' + tab);
+    if (target) target.classList.add('active');
+
+    // Update active tab button
+    const card = target.closest('.esp-card');
+    card.querySelectorAll('.esp-tab').forEach(btn => btn.classList.remove('active'));
+    card.querySelectorAll('.esp-tab').forEach(btn => {
+      if (btn.getAttribute('onclick').includes("'" + tab + "'")) btn.classList.add('active');
+    });
+  }
+
+  // SMOOTH NAV
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  // NAV ACTIVE STATE
+  const sections = document.querySelectorAll('section[id]');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 100) current = s.id;
+    });
+    document.querySelectorAll('.nav-links a').forEach(a => {
+      a.classList.remove('active');
+      if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+    });
+  });
+
+  // MODAL
+  function openModal() { document.getElementById('editModal').classList.add('open'); }
+  function closeModal() { document.getElementById('editModal').classList.remove('open'); }
+
+  function saveEdits() {
+    const about = document.getElementById('edit-about').value;
+    const email = document.getElementById('edit-email').value;
+    const phone = document.getElementById('edit-phone').value;
+    const formCG = document.getElementById('edit-form-cg').value;
+    const formCP = document.getElementById('edit-form-cp').value;
+
+    if (about) document.getElementById('about-text').textContent = about;
+    if (email) document.getElementById('contact-email').textContent = email;
+    if (phone) document.getElementById('contact-phone').textContent = phone;
+
+    // Update Google Form links
+    if (formCG) {
+      document.querySelectorAll('#cg-formulario a.btn-form').forEach(a => a.href = formCG);
+    }
+    if (formCP) {
+      document.querySelectorAll('#cp-formulario a.btn-form').forEach(a => a.href = formCP);
+    }
+
+    closeModal();
+    alert('✅ Cambios guardados correctamente en la página.');
+  }
+
+  // Close modal on overlay click
+  document.getElementById('editModal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+</script>
+</body>
+</html>
